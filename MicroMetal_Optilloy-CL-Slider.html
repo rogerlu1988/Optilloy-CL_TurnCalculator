@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inductor Winding Calculator - Optilloy-CL OC-050125-2H057-MY105P5</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
+    <h1 class="text-2xl font-bold text-gray-800 mb-2">Inductor Winding Calculator</h1>
+    <p class="text-sm text-gray-500 mb-4">For Optilloy-CL Core (Part Number: OC-050125-2H057-MY105P5)</p>
+    <p class="text-xs text-gray-400 mb-6">* Adjust the <strong>Target Inductance (µH)</strong> using the slider below. The required turns will update automatically.</p>
+
+    <label class="block mb-4">
+      <span class="text-gray-700">Reference Turns (N₀):</span>
+      <input type="number" id="refTurns" value="50" class="mt-1 p-2 w-full border rounded-xl bg-gray-100" readonly>
+    </label>
+
+    <label class="block mb-4">
+      <span class="text-gray-700">Reference Inductance (µH):</span>
+      <input type="number" id="refL" value="166" class="mt-1 p-2 w-full border rounded-xl bg-gray-100" readonly>
+    </label>
+
+    <label class="block mb-4">
+      <span class="text-gray-700">Target Inductance (µH): <span id="targetLValue" class="font-semibold">150</span></span>
+      <input type="range" id="targetL" min="10" max="200" value="150" class="mt-1 w-full" oninput="calculateTurns()">
+    </label>
+
+    <div id="result" class="mt-6 text-center"></div>
+  </div>
+
+  <script>
+    function calculateTurns() {
+      const refTurns = parseFloat(document.getElementById('refTurns').value);
+      const refL = parseFloat(document.getElementById('refL').value);
+      const targetL = parseFloat(document.getElementById('targetL').value);
+
+      document.getElementById('targetLValue').innerText = targetL;
+
+      const turns = refTurns * Math.sqrt(targetL / refL);
+      const turnsRounded = Math.ceil(turns);
+
+      document.getElementById('result').innerHTML = `
+        <div class="bg-gradient-to-r from-green-400 to-green-600 text-white rounded-xl p-6 shadow-md">
+          <p class="text-3xl font-bold">${turnsRounded} Turns Required</p>
+          <p class="text-sm mt-2">(Exact: ${turns.toFixed(2)} turns)</p>
+        </div>
+      `;
+    }
+
+    window.onload = calculateTurns;
+  </script>
+</body>
+</html>
